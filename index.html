@@ -2,70 +2,290 @@
   <header>
   <script src="https://raw.githubusercontent.com/processing-js/processing-js/v1.4.8/processing.js"></script>
   </header>
-  <h1>My FINAL SKETCH Title</h1>
+  <h1>Final Assignment</h1>
   <script type="text/processing" data-processing-target="mycanvas-final">
+  class Timer{
+  float startTime, stopTime; 
+   boolean started = false;  
   
-int posX = 25;
-float posY = 200;
-int movementSpeed = 5;
-int ballDiameter = 40;
-float gravity = 1.5;
-float velocityY = 0.0;
-boolean onGround = false;
-float jumpSize = -50;
+   Timer(float _stopTime){
+    stopTime = _stopTime;
+  }
+  
+    void timerStart(){
+    startTime = millis();
+    started = true;
+  }
+  
+  void stopTimer(){
+    started = false;
+    println("time stopped");
+  }
+    
+  boolean isFinished(){
+    float passedTime = millis() - startTime;
+    if((passedTime > stopTime) && (started)) {
+      return true;
+    } else {
+      return false;
+    }
+  }
 
-void setup(){
-  size(800,600);
 }
 
-void draw(){
-  background(255);
-  line(0,height/2,width,height/2);
-  update();
+PVector ellipseCenter;
+int radius;
+float distance = 0;
+int stateCount = 0;
+int state = 0;
+Timer myTimer;
+
+
+void setup() {
+  size(800, 600);
+  ellipseCenter = new PVector(400, 300);
+  radius = 175;
+     myTimer = new Timer(5000);
+   
+    }
+
+void draw() {
+
+  if (state == 0) {
+    myTimer.timerStart();
+    // The game I'm recreating is called Don't Press The Red Button
+    // It's a button you can infinitely press and it gives you humerous messages getting you to not press it.
+    background(255);
+    ellipseMode(RADIUS);
+    strokeWeight(0);
+
+    ellipse(ellipseCenter.x, ellipseCenter.y, radius, radius);
+
+    fill(0);
+    textSize(30);
+    text("Don't Press The Red Button!", 200, 50);
+    text("It's really dangerous...", 240, 550);
+
+    strokeWeight(10);
+    fill(0);
+    stroke(0);
+    point(mouseX, mouseY);
+
+    float distance = dist( ellipseCenter.x, ellipseCenter.y, mouseX, mouseY );
+
+    println(distance);
+    
+
+
+    if (distance < radius) {
+      textSize(25);
+      text("You sure about this?", 275, 300);
+      fill(127, 0, 0);
+      textSize(15);
+      text("Don't do it.",125,300);
+      text("It's not worth it man.",600,300);
+          } else {
+      fill(255, 0, 0);
+    }
+  }
+
+
+  if (state == 1) {
+    // This state references the later messages you get after pressing the button alot
+    // You might want to give it a few seconds to cool down xD 
+    background(255);
+    fill(0);
+    textSize(25);
+    text("Why did you press the button?!", 180, 50);
+    text("You really like breaking the rules don't you?!",100,125);
+    text("You're really tearing this family apart!",150,200);
+    text("This is why I drink you know!",180,275);
+    text("Look at your mother crying in the other room!",100,350);
+    text("Jesus Christ man",200,425);
+    strokeWeight(5);
+    line(100,400,100,450);
+    line(75,400,75,450);
+    line(75,500,100,475);
+
+
+
+    if (myTimer.isFinished()) {
+      state = 2;
+    }
+  }
+  if (state == 2) {
+    //The final state references what the game says after you press the button multiple times
+    background(255);
+    fill(0);
+    textSize(25);
+    text("Okay...okay...I'm good now",200,50);
+    text("You know what? Wasn't even my button anyway",150,125);
+    text("You gotta follow the rules man.",175,200);
+    text("Don't press any other buttons ok?",170,275);
+    text("Stuff like this just stresses me out man you know?",130,350);
+    text("I hope you can learn from this...",175,425);
+    strokeWeight(5);
+    line(100,400,100,450);
+    line(75,400,75,450);
+    line(75,500,100,500);
+  }
 }
 
-void update(){
-   velocityY = gravity + velocityY;
-  posY = velocityY + posY;
-  if (posY + (ballDiameter) > (height/2)){
-    posY = height/2 - (ballDiameter/2);
-    onGround = true;
-  } else onGround = false;
-  ellipse(posX,posY,ballDiameter,ballDiameter);
+void mousePressed() {
+  //everytime mouse is pressed, the states should increment 0 > 1 > 2 > 0 > 1 > 2, etc
+  stateCount++;
+  state = stateCount % 2;
 }
-
-void mousePressed(){
-  if (onGround)
-  jump();
-}
-
-void jump(){
-  velocityY= jumpSize;
-}
-
   </script>
   <canvas id="mycanvas-final"></canvas>
-  <p>Description: On my FINAL SKETCH ASSIGNMENT</p>
+  <p>Description: I recreated the online game "Don't Press The Red Button" for my final Assignment</p>
         <br />
         <br />
-  <h1>Your Sketch1 Title</h1>
+  <h1>Meme Assignment</h1>
   <script type="text/processing" data-processing-target="mycanvas1">
   
-  <!-- Your sketch1 goes here -->
+  int pressed = 0;
+int pressedState = 0;
+void setup(){
+  size(1280,800);
+}
+void draw(){
+  background(255);
+  fill(0);
+  textSize(46);
+  text("When your girl says real men shave when their gfs ask",30,100);
+ 
+ 
+  fill(0);
+  textSize(46);
+  text("Shave her out of your life instead",275,750);
+  
+  
+ noFill();
+ stroke(255,0,0);
+ strokeWeight(30);
+  ellipse(640,400,550,550);
+   
+line(500,615,800,200);
+strokeWeight(30);
+
+if (pressedState == 1){
+  fill(0);
+  textSize(45);
+  text("HELL NAW TO THE NAW NAW NAWWW",mouseX,mouseY);
+  text("NOT WORTH",50,350);
+  text("THE SHAME",50,450);
+  text("Sorry",950,350);
+  text("Not Sorry",950,450);
+  }
+}
+void mousePressed() {
+  pressed = pressed + 1;
+  pressedState = (pressed % 2);
+}
 
   </script>
   <canvas id="mycanvas1"></canvas>
-  <p>Description:</p>
+  <p>Description:For the meme assignment I made a meme on the "No True Scotsman" fallacy, which comments on purity of a person or race.</p>
         <br />
         <br />
-  <h1>Your Sketch2 Title</h1>
+  <h1>Sci-Fi's Beginning's</h1>
   <script type="text/processing" data-processing-target="mycanvas2">
   
-  <!-- Your sketch2 goes here -->
+int pressed = 0;
+int pressedState = 0;
+int starX;
+int starY;
+void setup(){
+  size (1000,800);
+} 
+     void draw(){
+   background(0);
+   for (int x=1; x < 10; x++){
+     noFill();   
+
+   strokeWeight(110);
+    line(375,0,1000,1000);
+  stroke(255);
+  
+   fill(255);
+  textSize(55);
+  text("T",100,375);
+  
+  fill(255);
+  textSize(55);
+  text("H",175,375);
+  
+  fill(255);
+  textSize(55);
+  text("E",250,375);
+  
+  fill(255);
+  textSize(55);
+  text("X",400,375);
+  
+  fill(0);
+  textSize(55);
+  text("F",550,375);
+  
+  fill(0);
+  textSize(55);
+  text("I",625,375);
+  
+  fill(255);
+  textSize(55);
+  text("L",700,375);
+  
+  fill(255);
+  textSize(55);
+  text("E",775,375);
+  
+  fill(255);
+  textSize(55);
+  text("S",850,375);
+    }
+    
+  
+  
+ if (pressedState == 1){
+     background(0);
+     for (int x=1; x < 10; x++){
+     noFill();
+     
+     fill(255);
+     textSize(85);
+     text("THE",375,200);
+     
+     fill(255);
+     textSize(85);
+     text("TWILIGHT",285,350);
+     
+     fill(255);
+     textSize(85);
+     text("ZONE",350,500);
+     stars();
+   }
+     }
+       }
+       
+       void stars() {
+    starX = round(random(0,width));
+    starY = round(random(0, height));
+    for (int x=0; x < 100; x++) {
+      stroke(255);
+      strokeWeight(5);
+      point(starX, starY);
+    }
+       }
+      
+ void mousePressed() {
+  pressed = pressed + 1;
+  pressedState = (pressed % 2);
+}
 
   </script>
   <canvas id="mycanvas2"></canvas>
-  <p>Description:</p>
+  <p>Description:For the Sci-Fi assignment I decided to recreate two title cards of American Sci-Fi TV: The Twilight Zone and The X-Files.</p>
         <br />
         <br />
   <h1>Your Sketch3 Title</h1>
