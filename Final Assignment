@@ -1,0 +1,131 @@
+class Timer{
+  float startTime, stopTime; 
+   boolean started = false;  
+  
+   Timer(float _stopTime){
+    stopTime = _stopTime;
+  }
+  
+    void timerStart(){
+    startTime = millis();
+    started = true;
+  }
+  
+  void stopTimer(){
+    started = false;
+    println("time stopped");
+  }
+    
+  boolean isFinished(){
+    float passedTime = millis() - startTime;
+    if((passedTime > stopTime) && (started)) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+}
+PVector ellipseCenter;
+int radius;
+float distance = 0;
+int stateCount = 0;
+int state = 0;
+Timer myTimer;
+
+
+void setup() {
+  size(800, 600);
+  ellipseCenter = new PVector(400, 300);
+  radius = 175;
+     myTimer = new Timer(5000);
+   
+    }
+
+void draw() {
+
+  if (state == 0) {
+    myTimer.timerStart();
+    // The game I'm recreating is called Don't Press The Red Button
+    // It's a button you can infinitely press and it gives you humerous messages getting you to not press it.
+    background(255);
+    ellipseMode(RADIUS);
+    strokeWeight(0);
+
+    ellipse(ellipseCenter.x, ellipseCenter.y, radius, radius);
+
+    fill(0);
+    textSize(30);
+    text("Don't Press The Red Button!", 200, 50);
+    text("It's really dangerous...", 240, 550);
+
+    strokeWeight(10);
+    fill(0);
+    stroke(0);
+    point(mouseX, mouseY);
+
+    float distance = dist( ellipseCenter.x, ellipseCenter.y, mouseX, mouseY );
+
+    println(distance);
+    
+
+
+    if (distance < radius) {
+      textSize(25);
+      text("You sure about this?", 275, 300);
+      fill(127, 0, 0);
+      textSize(15);
+      text("Don't do it.",125,300);
+      text("It's not worth it man.",600,300);
+          } else {
+      fill(255, 0, 0);
+    }
+  }
+
+
+  if (state == 1) {
+    // This state references the later messages you get after pressing the button alot
+    // You might want to give it a few seconds to cool down xD 
+    background(255);
+    fill(0);
+    textSize(25);
+    text("Why did you press the button?!", 180, 50);
+    text("You really like breaking the rules don't you?!",100,125);
+    text("You're really tearing this family apart!",150,200);
+    text("This is why I drink you know!",180,275);
+    text("Look at your mother crying in the other room!",100,350);
+    text("Jesus Christ man",200,425);
+    strokeWeight(5);
+    line(100,400,100,450);
+    line(75,400,75,450);
+    line(75,500,100,475);
+
+
+
+    if (myTimer.isFinished()) {
+      state = 2;
+    }
+  }
+  if (state == 2) {
+    //The final state references what the game says after you press the button multiple times
+    background(255);
+    fill(0);
+    textSize(25);
+    text("Okay...okay...I'm good now",200,50);
+    text("You know what? Wasn't even my button anyway",150,125);
+    text("You gotta follow the rules man.",175,200);
+    text("Don't press any other buttons ok?",170,275);
+    text("Stuff like this just stresses me out man you know?",130,350);
+    text("I hope you can learn from this...",175,425);
+    strokeWeight(5);
+    line(100,400,100,450);
+    line(75,400,75,450);
+    line(75,500,100,500);
+  }
+}
+
+void mousePressed() {
+  //everytime mouse is pressed, the states should increment 0 > 1 > 2 > 0 > 1 > 2, etc
+  stateCount++;
+  state = stateCount % 2;
+}
